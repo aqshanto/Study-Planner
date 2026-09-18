@@ -1,0 +1,68 @@
+{% extends "base.html" %} {% block title %}{{ heading }} - Study Planner{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-6">
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <h1 class="h4 mb-3">{{ heading }}</h1>
+
+        <!-- One form for both jobs: task is None when adding, and a real task
+             when editing. An empty action posts back to the current URL. -->
+        <form method="POST">
+          <div class="mb-3">
+            <label class="form-label" for="title">Title</label>
+            <input
+              class="form-control"
+              id="title"
+              name="title"
+              value="{{ task.title if task else '' }}"
+              required
+            />
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label" for="subject">Subject</label>
+            <input
+              class="form-control"
+              id="subject"
+              name="subject"
+              value="{{ task.subject if task and task.subject else '' }}"
+            />
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label" for="deadline">Deadline</label>
+            <!-- The date input needs YYYY-MM-DD, which isoformat() gives us. -->
+            <input
+              class="form-control"
+              id="deadline"
+              name="deadline"
+              type="date"
+              value="{{ task.deadline.isoformat() if task and task.deadline else '' }}"
+            />
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label" for="priority">Priority</label>
+            <select class="form-select" id="priority" name="priority">
+              {% for level in ['low', 'medium', 'high'] %}
+              <!-- Pre-select the task's current priority, or medium when adding. -->
+              <option
+                value="{{ level }}"
+                {% if (task and task.priority == level) or (not task and level == 'medium') %}selected{% endif %}
+              >
+                {{ level|capitalize }}
+              </option>
+              {% endfor %}
+            </select>
+          </div>
+
+          <button class="btn btn-primary" type="submit">Save</button>
+          <a class="btn btn-link" href="{{ url_for('dashboard') }}">Cancel</a>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

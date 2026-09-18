@@ -29,7 +29,7 @@ class Task(db.Model):
     subject = db.Column(db.String(80))
     deadline = db.Column(db.Date)
     priority = db.Column(db.String(10))  # "low" | "medium" | "high"
-    status = db.Column(db.String(10))  # "pending" | "done"
+    status = db.Column(db.String(10), nullable=False, default="pending")
 
     # Each task belongs to exactly one user.
     user_id = db.Column(db.Integer, db.ForeignKey("user.id"), nullable=False)
