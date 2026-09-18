@@ -22,7 +22,7 @@ class User(UserMixin, db.Model):
 
 
 class Task(db.Model):
-    """A study task. Not used yet - the task features come in a later step."""
+    """A study task belonging to one user."""
 
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(120), nullable=False)
