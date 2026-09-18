@@ -11,16 +11,16 @@
 
 ## 3. Must have Feature (From problem statement)
 
-- [ ] User signup : Create a new account
-- [ ] User login/logout : Manage user sessions
-- [ ] Add task : Create a study task
-- [ ] Edit task : Update task details
-- [ ] Delete task : Remove a task
-- [ ] Task details : Store title, subject, deadline, priority
-- [ ] Task status : Mark task as pending or done
-- [ ] User-specific tasks : Each user only sees their own tasks
-- [ ] Task filtering : View pending or completed tasks
-- [ ] Overdue highlighting : Show pending tasks whose deadline has passed
+- [x] User signup : Create a new account
+- [x] User login/logout : Manage user sessions
+- [x] Add task : Create a study task
+- [x] Edit task : Update task details
+- [x] Delete task : Remove a task
+- [x] Task details : Store title, subject, deadline, priority
+- [x] Task status : Mark task as pending or done
+- [x] User-specific tasks : Each user only sees their own tasks
+- [x] Task filtering : View pending or completed tasks
+- [x] Overdue highlighting : Show pending tasks whose deadline has passed
 
 ## 4. Nice to Have (only if time is left)
 
