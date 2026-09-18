@@ -6,327 +6,337 @@
 
 ## 2. Users and Roles.
 
-- Admin can : add , remove, update users and there information.
-- Users can : create their profile, see there dashboard. add tasks.
+- Guests can : signup / login .
+- Users can : add, edit, delete and filter their own tasks, and mark them done.
 
 ## 3. Must have Feature (From problem statement)
 
-- [] User signup : Create a new account
-- [] User login/logout : Manage user sessions
-- [] Add task : Create a study task
-- [] Edit task : Update task details
-- [] Delete task : Remove a task
-- [] Task details : Store title, subject, deadline, priority
-- [] Task status : Mark task as pending or done
-- [] User-specific tasks : Each user only sees their own tasks
-- [] Task filtering : View pending or completed tasks
-- [] Overdue highlighting : Show pending tasks whose deadline has passed
+- [ ] User signup : Create a new account
+- [ ] User login/logout : Manage user sessions
+- [ ] Add task : Create a study task
+- [ ] Edit task : Update task details
+- [ ] Delete task : Remove a task
+- [ ] Task details : Store title, subject, deadline, priority
+- [ ] Task status : Mark task as pending or done
+- [ ] User-specific tasks : Each user only sees their own tasks
+- [ ] Task filtering : View pending or completed tasks
+- [ ] Overdue highlighting : Show pending tasks whose deadline has passed
 
 ## 4. Nice to Have (only if time is left)
 
-- [] Task search : Quickly find tasks
-- [] Categories/tags : Organize tasks better
-- [] Notes section : Add extra details to tasks
-- [] Reminder notifications : Alert before deadlines
-- [] Progress statistics : Show completed task percentage
-- [] Calendar view : Display tasks by date
-- [] Profile page : Manage user information
-- [] Dark mode : Change interface appearance
+- [ ] Progress statistics : Show completed task percentage
+- [ ] Calendar view : Display tasks by date
 
 ## 5. Databse Tables
 
-1. users (id, name , email, password_hash, is_admin)
-2. Task (id, title, subject, deadline, priority, status,user_id)
+User
+
+- id: Integer, primary key
+- username: String(80), required
+- email: String(120), required, unique
+- password_hash: String(255), required
+
+Task
+
+- id: Integer, primary key
+- title: String(120), required
+- subject: String(80)
+- deadline: Date
+- priority: String(10) # "low" | "medium" | "high"
+- status : String(10) # "pending" | "done"
+- user_id: Integer, ForeignKey → User.id, required
+
+Relationship: one User has many Tasks; each Task belongs to exactly one User.
 
 ## 6. Routes
 
-| URL                      | Method    | Purpose                                  | Login Required |
-| ------------------------ | --------- | ---------------------------------------- | -------------- |
-| `/signup`                | GET, POST | Display signup page and create account   | No             |
-| `/login`                 | GET, POST | Display login page and authenticate user | No             |
-| `/logout`                | GET       | Logout current user                      | Yes            |
-| `/dashboard`             | GET       | Show user's task list                    | Yes            |
-| `/task/add`              | GET, POST | Create a new task                        | Yes            |
-| `/task/<id>/edit`        | GET, POST | Edit an existing task                    | Yes            |
-| `/task/<id>/delete`      | POST      | Delete a task                            | Yes            |
-| `/task/<id>/toggle`      | POST      | Change pending/done status               | Yes            |
-| `/tasks/filter/<status>` | GET       | Filter tasks by status                   | Yes            |
+| URL                         | Method    | Purpose                                  | Access |
+| --------------------------- | --------- | ---------------------------------------- | ------ |
+| `/signup`                   | GET, POST | Display signup page and create account   | No     |
+| `/login`                    | GET, POST | Display login page and authenticate user | No     |
+| `/logout`                   | GET       | Logout current user                      | Yes    |
+| `/dashboard`                | GET       | Required login                           | Yes    |
+| `/dashboard?status=pending` | GET       | Show login page                          | Yes    |
+| `/dashboard?status=done`    | GET       | Show user's task list                    | Yes    |
+| `/task/add`                 | GET, POST | Create a new task                        | Yes    |
+| `/task/<id>/edit`           | GET, POST | Edit an existing task                    | Yes    |
+| `/task/<id>/delete`         | POST      | Delete a task                            | Yes    |
+| `/task/<id>/toggle`         | POST      | Change pending/done status               | Yes    |
 
 ## 7. Build Order with times
 
-### Step 1: Setup Flask Project
+## Phase 1: Project Setup (10 minutes)
 
-Create:
+### Tasks:
 
-Flask application
-Template folder
-Database connection
-Bootstrap setup
+- Create Flask project structure
+- Setup virtual environment
+- Install required packages
+- Connect SQLite database
+- Configure Flask application
 
-Goal:
-A basic Flask page should load.
+### Output:
 
-### Step 2: Create Database Models
+- Flask app runs successfully
+- Database connection is ready
 
-Create:
+---
 
-User table
-Task table
-User-task relationship
+## Phase 2: Database Design (15 minutes)
 
-Goal:
-Database structure is ready.
+### Create Models:
 
-### Step 3: Add Authentication
+### User Table
 
-Build:
+Fields:
 
-Signup
-Login
-Logout
+- id
+- username
+- email
+- password_hash
 
-Goal:
-Users can create accounts and access their own sessions.
+### Task Table
 
-### Step 4: Create Task Dashboard
+Fields:
 
-Build:
+- id
+- title
+- subject
+- deadline
+- priority
+- status
+- user_id
 
-Display logged-in user's tasks
-Show empty task list initially
+### Relationship:
 
-Goal:
-User has a personal planner page.
+User
+|
+| 1
+|
+|------ Many
+|
+Task
 
-### Step 5: Add Task CRUD
+### Output:
+
+- Database tables created
+- User and Task relationship working
+
+---
+
+## Phase 3: Authentication System (25 minutes)
+
+### Build:
+
+### Signup
+
+- Create new user account
+- Store password securely
+
+### Login
+
+- Verify user credentials
+- Create login session
+
+### Logout
+
+- End user session
+
+### Route Protection:
+
+- Only logged-in users can access planner pages
+
+### Output:
+
+- User can register
+- User can login
+- User can logout
+
+---
+
+## Phase 4: Task Dashboard (15 minutes)
+
+### Build Main Page:
+
+Display:
+
+- Task title
+- Subject
+- Deadline
+- Priority
+- Status
+
+Important:
+
+- User can only see their own tasks
+
+### Output:
+
+- Personal task dashboard works
+
+---
+
+## Phase 5: Task CRUD Operations (30 minutes)
+
+### Add Task (10 minutes)
+
+Create task form:
+
+Fields:
+
+- Title
+- Subject
+- Deadline
+- Priority
+
+Save task into database.
+
+---
+
+### Edit Task (10 minutes)
+
+Allow user to update:
+
+- Title
+- Subject
+- Deadline
+- Priority
+
+---
+
+### Delete Task (10 minutes)
+
+Allow user to remove tasks.
+
+---
+
+### Output:
+
+- User can create, update, and delete tasks
+
+---
+
+## Phase 6: Status and Filtering (15 minutes)
+
+### Task Status:
 
 Add:
 
-Create task
-Read task list
-Update task
-Delete task
+- Pending
+- Done
 
-Goal:
-Complete task management.
+Allow users to change task status.
 
-### Step 6: Add Status System
+---
 
-Add:
+### Task Filtering:
 
-Pending status
-Done status
-Toggle button
+Create filters:
 
-Goal:
-Users can track completion.
+- All Tasks
+- Pending Tasks
+- Done Tasks
 
-### Step 7: Add Filtering
+### Output:
 
-Add:
+- User can manage task progress
 
-View all tasks
-View pending tasks
-View completed tasks
+---
 
-Goal:
-Make task management easier.
+## Phase 7: Overdue Highlighting (5 minutes)
 
-### Step 8: Add Overdue Highlighting
+Rule:
 
-Add logic:
+If:
 
-Deadline passed + pending status = overdue
+- Deadline is before today's date
+- Status is pending
 
-Goal:
-Important unfinished tasks are visible.
+Then:
 
-### Step 9: Final Testing
+- Highlight the task
+
+### Output:
+
+- Overdue tasks are visible
+
+---
+
+## Phase 8: Testing and Bug Fixing (5 minutes)
 
 Check:
 
-✅ User registration works
-✅ Login/logout works
-✅ Users only see their own tasks
-✅ Tasks can be created, edited, deleted
-✅ Status changes work
-✅ Filters work
-✅ Overdue tasks appear correctly
+- Signup works
+- Login works
+- Logout works
+- Add task works
+- Edit task works
+- Delete task works
+- Status change works
+- Filtering works
+- User isolation works
+- Overdue highlighting works
 
-## 4. Test Checklist
+---
 
-1. User Authentication Testing
+# Final Timeline
 
-Signup
+| Phase                 |                      Time |
+| --------------------- | ------------------------: |
+| Project Setup         |                10 minutes |
+| Database Design       |                15 minutes |
+| Authentication System |                25 minutes |
+| Task Dashboard        |                15 minutes |
+| Task CRUD Operations  |                30 minutes |
+| Status and Filtering  |                15 minutes |
+| Overdue Highlighting  |                 5 minutes |
+| Testing               |                 5 minutes |
+| **Total**             | **120 minutes (2 hours)** |
 
-☐ User can open signup page
-☐ User can create an account with valid information
-☐ User cannot signup with missing required fields
-☐ User cannot create duplicate account with same email/username
-☐ Password is stored securely (not plain text)
-☐ After signup, user can log in successfully
+---
 
-Login
+# Application Flow
 
-☐ User can open login page
-☐ User can login with correct credentials
-☐ User cannot login with wrong password
-☐ User cannot login with invalid email/username
-☐ Error message appears for failed login
-☐ Successful login redirects to dashboard
+User
 
-Logout
+↓
 
-☐ Logged-in user can logout
-☐ After logout, user cannot access protected pages
-☐ User is redirected to login page after logout
+Signup / Login
 
-2. Task Creation Testing
-   
-Add Task
-
-☐ Logged-in user can open add task page
-☐ User can create a task with all required fields
-
-Check fields:
-
-☐ Title saves correctly
-☐ Subject saves correctly
-☐ Deadline date saves correctly
-☐ Priority saves correctly
-☐ Default status is pending
-
-☐ New task appears on dashboard after creation
-
-3. Task Viewing Testing
+↓
 
 Dashboard
 
-☐ User can see their own tasks
-☐ Empty dashboard works when user has no tasks
-☐ Task information displays correctly:
+↓
 
-☐ Title
-☐ Subject
-☐ Deadline
-☐ Priority
-☐ Status
+Create Task
 
-4. User Data Protection Testing
+↓
 
-User Isolation
+Save in Database
 
-Create two users:
+↓
 
-User A
-User B
+Display Tasks
 
-Test:
+↓
 
-☐ User A can see User A's tasks
-☐ User A cannot see User B's tasks
-☐ User B can see User B's tasks
-☐ User B cannot edit User A's tasks
-☐ User B cannot delete User A's tasks
+Update Status
 
-5. Task Edit Testing
+↓
 
-☐ User can open edit page
-☐ Existing task data appears correctly
-☐ User can update title
-☐ User can update subject
-☐ User can update deadline
-☐ User can change priority
-☐ Updated information appears on dashboard
+Filter Tasks
 
-6. Task Delete Testing
+## 8. Test Checklist
 
-☐ User can delete their own task
-☐ Deleted task disappears from dashboard
-☐ Deleted task is removed from database
-☐ User cannot delete another user's task
-
-7. Task Status Testing
-
-Mark Done
-
-☐ Pending task can be marked as done
-☐ Status changes from pending → done
-☐ Done task displays correctly
-
-Mark Pending
-
-☐ Done task can be changed back to pending
-☐ Status changes from done → pending
-
-8. Task Filtering Testing
-
-Pending Filter
-
-☐ Pending filter button works
-☐ Only pending tasks are displayed
-☐ Done tasks are hidden
-
-Done Filter
-
-☐ Done filter button works
-☐ Only completed tasks are displayed
-☐ Pending tasks are hidden
-
-All Tasks
-
-☐ All tasks view shows both pending and done tasks
-
-9. Deadline and Overdue Testing
-
-Create tasks:
-
-Past deadline + pending status
-Future deadline + pending status
-Past deadline + done status
-
-Check:
-
-☐ Past deadline pending task is highlighted
-☐ Future deadline pending task is normal
-☐ Completed overdue task is not highlighted
-
-10. Access Control Testing
-
-Without login:
-
-☐ User cannot open dashboard
-☐ User cannot add tasks
-☐ User cannot edit tasks
-☐ User cannot delete tasks
-
-After login:
-
-☐ All task features become available
-
-11. UI Testing
-
-☐ Navigation bar works
-☐ Forms display correctly
-☐ Buttons work properly
-☐ Bootstrap styling loads
-☐ Error messages are understandable
-☐ Layout works on desktop and mobile
-
-12. Final Project Acceptance Checklist
-
-Before considering the project complete:
-
-☐ Signup works
-☐ Login works
-☐ Logout works
-☐ User-specific data works
-☐ Add task works
-☐ Edit task works
-☐ Delete task works
-☐ Status update works
-☐ Filtering works
-☐ Overdue highlighting works
-☐ No user can access another user's tasks
-☐ Database stores data correctly
-☐ App runs without errors
+- [ ] Logged out: /dashboard, /task/add redirect to login
+- [ ] Signup with an existing email is rejected
+- [ ] Password is not stored in plain text (check the .db or print the hash)
+- [ ] User A cannot open, edit or delete User B's task (test with 2 accounts)
+- [ ] Add task → appears on dashboard with correct subject, deadline, priority
+- [ ] Edit task → form shows old values, saves new ones
+- [ ] Delete task → gone from dashboard
+- [ ] Toggle → pending becomes done and back
+- [ ] Filter pending / done / all each show the right rows
+- [ ] Past deadline + pending is highlighted; past deadline + done is not
+- [ ] App starts from a fresh clone with the README steps
